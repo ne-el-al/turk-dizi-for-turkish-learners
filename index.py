@@ -38,12 +38,24 @@ with open("transcript.txt", "r") as transcript:
 
 transcript_lemma_list = []
 
+# all the front vowels of the synharmonism on with a
+mak_synharmony = "aıou"
+
 # loop through each sentence in the transcript and get the lemma of each word
 for sentence in transcript_clear:
     # get lemma of each word
     doc = nlp(sentence)
     for word in doc.words:
         lemma = word.lemma
+
+        # for verbs to add the infinitive ending based on ynharmonism
+        pos = word.upos
+        if pos == "VERB":
+            if mak_synharmony.find(lemma[-1]) != -1 or mak_synharmony.find(lemma[-2]) != -1 :
+                lemma = lemma + "mak"
+            else: 
+                lemma = lemma + "mek"
+        
         transcript_lemma_list.append(lemma)
  
 # counting occurences of each word
